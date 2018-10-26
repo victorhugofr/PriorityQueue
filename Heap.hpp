@@ -3,15 +3,18 @@
 #include "Node.hpp"
 #ifndef HEAP_HPP
 #define HEAP_HPP
+using namespace std;
 template<typename T>
 class Heap{
 public:
     std::vector<Node<T> > nodes;
     int len;
     int size;
+
     Heap(){
         
     }
+
     void push (int priority, T data) {
         if (len + 1 >= size) {
             size = size ? size * 2 : 4;
@@ -29,7 +32,7 @@ public:
         len++;
     }
 
-    T pop () {
+    T top () {
         int i, j, k;
         if (!len) {
             return NULL;
@@ -39,7 +42,6 @@ public:
         nodes[1] = nodes[len];
  
         len--;
- 
         i = 1;
         while (i!=len+1) {
             k = len+1;
@@ -54,6 +56,31 @@ public:
             i = k;
         }
     return data;
+    }
+
+    T pop () {
+        int i, j, k;
+        if (!len) {
+            return NULL;
+        }
+        T data = nodes[1].data;
+    
+        nodes[1] = nodes[len];
+ 
+        len--;
+        i = 1;
+        while (i!=len+1) {
+            k = len+1;
+            j = 2 * i;
+            if (j <= len && nodes[j].priority < nodes[k].priority) {
+                k = j;
+            }
+            if (j + 1 <= len && nodes[j + 1].priority < nodes[k].priority) {
+                k = j + 1;
+            }
+            nodes[i] = nodes[k];
+            i = k;
+        }
     }
 };
 #endif
